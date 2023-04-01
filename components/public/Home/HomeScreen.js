@@ -13,9 +13,6 @@ function HomeScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <AppHeader navigation={navigation} />
-      <View >
-      
-      </View>
       <View style={styles.content}>
         <Tab.Navigator
           screenOptions={({ route }) => ({

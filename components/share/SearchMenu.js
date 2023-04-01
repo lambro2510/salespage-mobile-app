@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ProductService from '../../services/ProductService';
-
+import LoadingScreen from './animation/LoadingScreen';
 import SearchProductScreen from '../public/product/SearchProductScreen';
 
 const SearchMenu = ({ navigation }) => {
@@ -24,6 +24,7 @@ const SearchMenu = ({ navigation }) => {
     pageSize: 5,
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [isShowResult, setIsShowResult] = useState(false);
   const [isFocused, setIsFocused] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
@@ -32,12 +33,8 @@ const SearchMenu = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const handleTextChange = (text) => {
-    setSearchInfo({ ...searchInfo, productName: text });
-    setIsShowResult(false);
-  };
-
   useEffect(() => {
+    loading();
     const timer = setTimeout(() => {
       if (searchInfo.productName) {
         ProductService.getAllProducts(searchInfo).then((products) => {
@@ -61,14 +58,31 @@ const SearchMenu = ({ navigation }) => {
   }, [searchInfo]);
 
   const handleSearch = () => {
+    loading();
     setIsShowResult(true);
-    console.log(isShowResult);
     setSuggestions([]);
+  };
+
+  const handleTextChange = (text) => {
+    setSearchInfo({ ...searchInfo, productName: text });
+    loading();
+    setIsShowResult(false);
+  };
+
+  const loading = () => {
+    setIsLoading(true);
+
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
   };
 
   const SuggestionItem = ({ item, setSearchInfo, setSuggestions }) => {
     const handlePress = async () => {
       setSearchInfo({ ...searchInfo, productName: item.name });
+      loading();
       setIsShowResult(true);
       setSuggestions([]);
     };
@@ -111,7 +125,8 @@ const SearchMenu = ({ navigation }) => {
           <Ionicons name="ios-gift" size={20} color="#000" />
         </View>
       )}
-      {suggestions.length > 0 && isShowResult == false && (
+      {isLoading == true && <LoadingScreen />}
+      {!isLoading && suggestions.length > 0 && !isShowResult && (
         <FlatList
           style={styles.suggestItem}
           data={suggestions}
@@ -125,7 +140,7 @@ const SearchMenu = ({ navigation }) => {
           keyExtractor={(item) => item.name}
         />
       )}
-      {isShowResult && (
+      {!isLoading && isShowResult && (
         <SearchProductScreen searchInfo={searchInfo} navigation={navigation} />
       )}
     </View>

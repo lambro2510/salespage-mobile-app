@@ -16,8 +16,7 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../../../redux/actions';
 import { MAIN_LOGO_URL, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import NotificationModal from '../../share/UI/NotificationModal';
-import LottieView from 'lottie-react-native';
+import NotificationModal from '../../share/animation/NotificationModal';
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isRememberPassword, setIsRememberPassword] = useState(false);

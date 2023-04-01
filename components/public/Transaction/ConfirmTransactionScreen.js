@@ -67,7 +67,7 @@ const ConfirmTransactionScreen = ({
     <Modal visible={isVisible} animationType="slide" onRequestClose={onClose}>
       <View style={styles.container}>
         <TouchableOpacity onPress={handleCancelPurchase}>
-          <Text style={styles.closeButton}>Close</Text>
+          <Text style={styles.closeButton}>Đóng</Text>
         </TouchableOpacity>
         <View style={styles.productContainer}>
           <Image
@@ -78,13 +78,13 @@ const ConfirmTransactionScreen = ({
             <Text style={styles.productName}>{product.productName}</Text>
             <Text style={styles.description}>{product.description}</Text>
             <Text style={styles.price}>
-              Price: {formatCurrency(product.price)}{' '}
+              Giá: {formatCurrency(product.price)}
             </Text>
-            <Text style={styles.quantity}>Quantity: {quantity}</Text>
+            <Text style={styles.quantity}>Số lượng: {quantity}</Text>
           </View>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Payment code:</Text>
+          <Text style={styles.label}>Mã thanh toán:</Text>
           <TextInput
             style={styles.input}
             value={transaction.voucherCode}
@@ -92,7 +92,7 @@ const ConfirmTransactionScreen = ({
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Delivery address:</Text>
+          <Text style={styles.label}>Địa chỉ giao hàng:</Text>
           <TextInput
             style={styles.input}
             value={transaction.address}
@@ -102,7 +102,7 @@ const ConfirmTransactionScreen = ({
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Note:</Text>
+          <Text style={styles.label}>Ghi chú:</Text>
           <TextInput
             style={styles.input}
             value={transaction.note}
@@ -110,7 +110,7 @@ const ConfirmTransactionScreen = ({
           />
         </View>
         <View style={styles.priceContainer}>
-          <Text style={styles.label}>Total price:</Text>
+          <Text style={styles.label}>Tổng giá:</Text>
           <Text style={styles.price}>
             {formatCurrency(totalPrice)}
           </Text>
@@ -118,7 +118,7 @@ const ConfirmTransactionScreen = ({
         <TouchableOpacity
           style={styles.confirmButton}
           onPress={handleConfirmPurchase}>
-          <Text style={styles.confirmButtonText}>Confirm Purchase</Text>
+          <Text style={styles.confirmButtonText}>Xác nhận mua hàng</Text>
         </TouchableOpacity>
       </View>
     </Modal>

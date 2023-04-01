@@ -53,8 +53,8 @@ export function formatCurrency(number) {
   const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   const decimalPart = parts[1].substring(0, 3);
   if (decimalPart === '000') {
-    return integerPart + ' VND';
+    return integerPart + ' VND ';
   }
-  return integerPart + '.' + decimalPart + ' VND';
+  return integerPart + '.' + decimalPart + ' VND ';
 }
 
