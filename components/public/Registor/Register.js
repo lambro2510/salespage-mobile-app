@@ -12,7 +12,7 @@ import AccountService from '../../../services/AccountService';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../../redux/actions';
 import { MAIN_LOGO_URL } from '../../../constants';
-
+import { formatPhoneNumber } from '../../../utils';
 const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
@@ -94,7 +94,7 @@ const RegisterScreen = ({ navigation }) => {
           style={styles.phoneNumberInput}
           placeholder={'Phone number'}
           onChangeText={(text) =>
-            setSignUpData({ ...signUpData, phoneNumber: text })
+            setSignUpData({ ...signUpData, phoneNumber: formatPhoneNumber(text) })
           }
         />
         <View style={styles.dateInput}>

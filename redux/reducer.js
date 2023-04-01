@@ -1,6 +1,7 @@
 const initialState = {
   token: null,
   isLogin: null,
+  username: null,
 };
 
 const Reducer = (state = initialState, action) => {
@@ -15,15 +16,15 @@ const Reducer = (state = initialState, action) => {
         ...state,
         token: null,
       };
-    case 'SET_LOGIN':
+    case 'SET_USERNAME':
       return {
         ...state,
-        isLogin: true,
+        username: action.payload,
       };
-    case 'SET_LOGOUT':
+    case 'REMOVE_USERNAME':
       return {
         ...state,
-        isLogin: false,
+        username: null,
       };
     default:
       return state;

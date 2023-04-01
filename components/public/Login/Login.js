@@ -9,18 +9,18 @@ import {
   ActivityIndicator,
   Switch,
   ScrollView,
-  Animated,
 } from 'react-native';
 import AccountService from '../../../services/AccountService';
 import { useDispatch } from 'react-redux';
-import { setToken } from '../../../redux/actions';
+import { setToken,setUsername } from '../../../redux/actions';
 import { MAIN_LOGO_URL, SCREEN_WIDTH, SCREEN_HEIGHT } from '../../../constants';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
-import NotificationModal from '../../share/animation/NotificationModal';
+
+import SuccessModal from '../../share/animation/SuccessModal';
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isRememberPassword, setIsRememberPassword] = useState(false);
-  const [username, setUsername] = useState('');
+  const [username, setUsernameAccount] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
@@ -30,6 +30,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       const response = await AccountService.signIn(username, password);
       dispatch(setToken(response.token));
+      dispatch(setUsername(response.username));
       setIsLoading(false);
       setShowSuccessNotification(true);
       setTimeout(() => {
@@ -63,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleUsernameChange = (text) => {
-    setUsername(text);
+    setUsernameAccount(text);
   };
 
   const handlePasswordChange = (text) => {
@@ -132,7 +133,7 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.registerButton}>Register </Text>
           </TouchableOpacity>
         </View>
-        <NotificationModal
+        <SuccessModal
           title={''}
           message={'Đăng nhập thành công'}
           visible={showSuccessNotification}

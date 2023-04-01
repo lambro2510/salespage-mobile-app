@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
@@ -13,7 +13,8 @@ import {
 import { useSelector } from 'react-redux';
 import { formatCurrency } from '../../../utils';
 import ProductTransactionService from '../../../services/ProductTransactionService';
-
+import SuccessModal from '../../share/animation/SuccessModal'
+import TransactionInfoScreen from './TransactionInfoScreen';
 const ConfirmTransactionScreen = ({
   product,
   isVisible,
@@ -29,9 +30,13 @@ const ConfirmTransactionScreen = ({
     address: '',
   });
 
+  useEffect(() => {
+    setTotalPrice(product?.price * quantity)
+  })
+
   const token = useSelector(state => state.auth.token);
   const [totalPrice, setTotalPrice] = useState(product.price * quantity);
-
+  const [isSuccess, setIsSuccess] = useState(false);
   const handlePaymentCodeInput = (text) => {
     setTransaction({
       ...transaction,
@@ -52,10 +57,18 @@ const ConfirmTransactionScreen = ({
       return;
     }
     setTransaction({ ...transaction, address: transaction.address.trim() });
-    try{
-      const response = await ProductTransactionService.createProductTransaction(transaction, token)
-    }catch(error){
-      navigation.navigate("Login")
+    try {
+      console.log(token)
+      const transactionInfo = await ProductTransactionService.createProductTransaction(transaction, token)
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        navigation.navigate('TransactionInfoScreen', { productTransactionInfo: transactionInfo })
+      }, 3000);
+    } catch (error) {
+      if (error == 'Login') {
+        navigation.navigate("Login")
+      }
     }
   };
 
@@ -84,7 +97,7 @@ const ConfirmTransactionScreen = ({
           </View>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Mã thanh toán:</Text>
+          <Text style={styles.label}>Mã thanh toán: </Text>
           <TextInput
             style={styles.input}
             value={transaction.voucherCode}
@@ -92,7 +105,7 @@ const ConfirmTransactionScreen = ({
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Địa chỉ giao hàng:</Text>
+          <Text style={styles.label}>Địa chỉ giao hàng: </Text>
           <TextInput
             style={styles.input}
             value={transaction.address}
@@ -102,7 +115,7 @@ const ConfirmTransactionScreen = ({
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Ghi chú:</Text>
+          <Text style={styles.label}>Ghi chú: </Text>
           <TextInput
             style={styles.input}
             value={transaction.note}
@@ -115,11 +128,13 @@ const ConfirmTransactionScreen = ({
             {formatCurrency(totalPrice)}
           </Text>
         </View>
+
         <TouchableOpacity
           style={styles.confirmButton}
           onPress={handleConfirmPurchase}>
           <Text style={styles.confirmButtonText}>Xác nhận mua hàng</Text>
         </TouchableOpacity>
+        <SuccessModal message={'Tạo đơn hàng thành công'} visible={isSuccess} onClose={() => { setIsSuccess(false) }} />
       </View>
     </Modal>
   );

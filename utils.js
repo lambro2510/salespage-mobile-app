@@ -23,16 +23,19 @@ export function getErrorFromResponse(error) {
       getMessageFromError(error.response.data.message),
       ToastAndroid.SHORT
     );
+    throw new Error('Valid')
   } else if (error.response.data.code == 1005 | 1000) {
     ToastAndroid.show(
       error.response.data.message,
       ToastAndroid.SHORT
     );
+    throw new Error('Data error')
   } else {
     ToastAndroid.show(
       'Hệ thống không phản hồi, vui lòng thử lại',
       ToastAndroid.SHORT
     );
+    throw new Error('Server error')
   }
 }
 
@@ -56,5 +59,17 @@ export function formatCurrency(number) {
     return integerPart + ' VND ';
   }
   return integerPart + '.' + decimalPart + ' VND ';
+}
+
+export function formatPhoneNumber(phoneNumber) {
+  // Xóa tất cả các khoảng trắng, dấu ngoặc đơn và dấu gạch ngang
+  phoneNumber = phoneNumber.replace(/[\s()-]/g, '');
+  
+  // Nếu số điện thoại bắt đầu bằng 0, thay thế bằng +84
+  if (phoneNumber.startsWith('0')) {
+    phoneNumber = '+84' + phoneNumber.slice(1);
+  }
+  
+  return phoneNumber;
 }
 

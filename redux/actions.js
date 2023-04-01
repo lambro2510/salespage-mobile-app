@@ -7,10 +7,7 @@ export const removeToken = () => ({
   type: 'REMOVE_TOKEN',
 });
 
-export const setLogin = () => ({
-  type: 'SET_LOGIN',
+export const setUsername = () => ({
+  type: 'SET_USERNAME',
 });
 
-export const setLogout = () => ({
-  type: 'SET_LOGOUT',
-});
