@@ -17,8 +17,7 @@ const SuccessModal = ({
   visible,
   onClose,
 }) => {
-  const modalWidth = SCREEN_WIDTH * 0.8;
-  const modalHeight = SCREEN_HEIGHT * 0.3;
+
 
   const [animation, setAnimation] = useState(new Animated.Value(0));
 

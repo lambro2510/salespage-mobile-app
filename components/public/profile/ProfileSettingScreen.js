@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { removeToken } from '../../../redux/actions';
 
-const ProfileSettingScreen = ({logout}) => {
+const ProfileSettingScreen = ({logout, navigation}) => {
   
   const dispatch = useDispatch(); // Get the dispatch function from the useDispatch hook
   const handleLogout = () => {
@@ -30,7 +30,7 @@ const ProfileSettingScreen = ({logout}) => {
           style={styles.sectionButtonIcon}
         />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.sectionButton}>
+      <TouchableOpacity style={styles.sectionButton} onPress={() => {navigation.navigate('TransactionHistory')}}>
         <Text style={styles.sectionButtonText}>Lịch sử mua hàng</Text>
         <Ionicons
           name="time-outline"

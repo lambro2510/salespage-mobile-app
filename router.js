@@ -7,6 +7,8 @@ import RegisterScreen from './components/public/Registor/Register';
 import ProductDetailScreen from './components/public/product/ProductDetailScreen';
 import SearchMenu from './components/share/SearchMenu';
 import TransactionInfoScreen from './components/public/Transaction/TransactionInfoScreen';
+import TransactionHistory from './components/public/Transaction/TransactionHistoryScreen';
+
 export default function Router() {
   const Stack = createStackNavigator();
 
@@ -15,6 +17,7 @@ export default function Router() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SearchMenu" component={SearchMenu} />
           <Stack.Screen name="TransactionInfoScreen" component={TransactionInfoScreen} />
+          <Stack.Screen name="TransactionHistory" component={TransactionHistory} />
           <Stack.Screen name="ProductDetail" component={ProductDetailScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />

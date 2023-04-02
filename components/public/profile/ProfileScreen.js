@@ -45,7 +45,7 @@ const ProfileScreen = ({ navigation }) => {
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}>
           <PersonalProfileScreen profile={profile} />
-          <ProfileSettingScreen logout={handleLogout} />
+          <ProfileSettingScreen logout={handleLogout} navigation={navigation}/>
         </ScrollView>
       )}
     </View>

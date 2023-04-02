@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
-import ImagePicker from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
 import UserService from '../../../services/UserService';
 const PersonalProfileScreen = ({ profile }) => {
   
@@ -33,17 +31,7 @@ const PersonalProfileScreen = ({ profile }) => {
   const [image, setImage] = useState(null);
 
   const handleChooseImage = async () => {
-    try {
-      const result = await DocumentPicker.pick({
-        type: [DocumentPicker.types.images],
-      });
-      if (result.uri) {
-        setImage(result);
-        handleImageUpload(result);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    
   };
 
   const handleImageUpload = async (image) => {

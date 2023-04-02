@@ -7,14 +7,14 @@ const ProductService = {
     try {
       const response = await axios.get(BASE_URL + '/v1/api/public/product', {
         params: {
-          page: searchInfo.page,
-          size: searchInfo.pageSize,
-          productType: searchInfo.productType,
-          productName: searchInfo.productName,
-          minPrice: searchInfo.minPrice,
-          maxPrice: searchInfo.maxPrice,
-          storeName: searchInfo.storeName,
-          username: searchInfo.username,
+          page: searchInfo?.page,
+          size: searchInfo?.pageSize,
+          productType: searchInfo?.productType,
+          productName: searchInfo?.productName,
+          minPrice: searchInfo?.minPrice,
+          maxPrice: searchInfo?.maxPrice,
+          storeName: searchInfo?.storeName,
+          username: searchInfo?.username,
         },
       });
       return response.data;

@@ -9,32 +9,57 @@ export function getAuthHeader(token) {
 }
 
 
+import { Alert, Platform } from 'react-native';
+
 export function getErrorFromResponse(error) {
   console.log(error.response)
   if(error.response.status === 401){
-    ToastAndroid.show(
-      'Hết hạn đăng nhạp, vui lòng đăng nhập lại',
-      ToastAndroid.SHORT
-    );
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(
+        'Hết hạn đăng nhạp, vui lòng đăng nhập lại',
+        ToastAndroid.SHORT
+      );
+    } else {
+      Alert.alert(
+        'Hết hạn đăng nhập',
+        'Vui lòng đăng nhập lại',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
     throw new Error('Login')
   }
   if (error.response.data.code == 1001) {
-    ToastAndroid.show(
-      getMessageFromError(error.response.data.message),
-      ToastAndroid.SHORT
-    );
-    throw new Error('Valid')
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(
+        getMessageFromError(error.response.data.message),
+        ToastAndroid.SHORT
+      );
+    } else {
+      Alert.alert(
+        'Lỗi',
+        getMessageFromError(error.response.data.message),
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
+    throw new Error(getMessageFromError(error.response.data.message))
   } else if (error.response.data.code == 1005 | 1000) {
-    ToastAndroid.show(
-      error.response.data.message,
-      ToastAndroid.SHORT
-    );
-    throw new Error('Data error')
+    throw new Error(error.response.data.message)
   } else {
-    ToastAndroid.show(
-      'Hệ thống không phản hồi, vui lòng thử lại',
-      ToastAndroid.SHORT
-    );
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(
+        'Hệ thống không phản hồi, vui lòng thử lại',
+        ToastAndroid.SHORT
+      );
+    } else {
+      Alert.alert(
+        'Lỗi',
+        'Hệ thống không phản hồi, vui lòng thử lại',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+    }
     throw new Error('Server error')
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,17 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import AccountService from '../../../services/AccountService';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../../redux/actions';
 import { MAIN_LOGO_URL } from '../../../constants';
 import { formatPhoneNumber } from '../../../utils';
+import LoadingScreen from '../../share/animation/LoadingScreen';
+import SuccessModal from '../../share/animation/SuccessModal';
+import ErrorModal from '../../share/animation/ErrorModal';
+
 const RegisterScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
@@ -26,16 +31,36 @@ const RegisterScreen = ({ navigation }) => {
     phoneNumber: '',
     dateOfBirth: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorData, setErrorData] = useState({visible : false, message : ''});
+  
 
-  const handleRegister = async () => {
+  const handleRegister = () => {
     const dateOfBirth =
-      signUpData.day + '-' + signUpData.month + '-' + signUpData.year;
+      signUpData.day + "-" + signUpData.month + "-" + signUpData.year;
     const formData = { ...signUpData, dateOfBirth };
-    const response = await AccountService.signUp(formData);
-    console.log(response);
-    dispatch(setToken(response.token));
-    navigation.navigate('Home');
+  
+    setIsLoading(true);
+    AccountService.signUp(formData)
+      .then((response) => {
+        setIsLoading(false);
+        setIsSuccess(true);
+        setTimeout(() => {
+          setIsSuccess(false);
+          dispatch(setToken(response.token));
+          navigation.navigate("Home");
+        }, 2000);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        setErrorData({ message: error, visible: true });
+        setTimeout(()=>{
+          setErrorData({ message: error, visible: false });
+        },2000)
+      });
   };
+  
 
   return (
     <ScrollView
@@ -120,13 +145,19 @@ const RegisterScreen = ({ navigation }) => {
         </View>
       </View>
       <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
-        <Text>Register</Text>
+      {isLoading ? (
+            <ActivityIndicator color="#ffffff" />
+          ) : (
+            <Text style={styles.buttonText}>Đăng ký </Text>
+          )}
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.loginButton}
         onPress={() => navigation.navigate('Login')}>
         <Text style={styles.loginText}>Đã có tài khoản? Đăng nhập ngay </Text>
       </TouchableOpacity>
+      <SuccessModal message={'Đăng ký thành công'} visible={isSuccess} onClose={() => {setIsSuccess(false)}}/>
+      <ErrorModal error={errorData} onClose={() => {setErrorData({...errorData, visible : false})}}/>
     </ScrollView>
   );
 };
@@ -237,7 +268,7 @@ const styles = StyleSheet.create({
   loginText: {
     fontSize: 16,
     color: 'blue',
-    marginBottom : 10,
+    marginBottom: 10,
   },
 });
 export default RegisterScreen;

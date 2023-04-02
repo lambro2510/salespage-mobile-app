@@ -3,6 +3,8 @@ import { Dimensions, PixelRatio  } from 'react-native';
 
 export const BASE_URL = 'https://salepage-server-rherm.appengine.bfcplatform.vn'
 
+export const LOCAL_BASE_URL = 'http://localhost:8080'
+
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 
 export const SCREEN_HEIGHT = Dimensions.get('window').height;

@@ -13,8 +13,7 @@ import {
 import { useSelector } from 'react-redux';
 import { formatCurrency } from '../../../utils';
 import ProductTransactionService from '../../../services/ProductTransactionService';
-import SuccessModal from '../../share/animation/SuccessModal'
-import TransactionInfoScreen from './TransactionInfoScreen';
+import SuccessModal from '../../share/animation/SuccessModal';
 const ConfirmTransactionScreen = ({
   product,
   isVisible,
@@ -58,7 +57,6 @@ const ConfirmTransactionScreen = ({
     }
     setTransaction({ ...transaction, address: transaction.address.trim() });
     try {
-      console.log(token)
       const transactionInfo = await ProductTransactionService.createProductTransaction(transaction, token)
       setIsSuccess(true);
       setTimeout(() => {
